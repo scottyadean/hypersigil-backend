@@ -1,0 +1,98 @@
+# Hypersigil api - post a thought, read everyone else's.
+service: hypersigil-api
+
+custom:
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 3
+  stage: ${opt:stage, 'local'}
+  args: ${file(./config/${self:custom.stage}.yml)}
+  pythonRequirements:
+    dockerizePip: non-linux
+
+package:
+  patterns:
+    - 'src/**'
+    - '!config/**'
+    - '!env/**'
+    - '!.venv/**'
+    - '!node_modules/**'
+    - '!tests/**'
+    - '!.vscode/**'
+    - '!.serverless/**'
+    - '!package-lock.json'
+
+provider:
+  name: aws
+  runtime: python3.12
+  environment: ${self:custom.args.env_vars}
+  apiGateway:
+    apiKeys:
+      - ${self:custom.stage}-hypersigil-api-key
+  stage: ${self:custom.stage}
+  logRetentionInDays: 30
+  timeout: 30
+  memorySize: 256
+  region: ${self:custom.args.region}
+  deploymentBucket:
+    name: ${self:custom.args.deploy_bucket}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "ssm:GetParameter"
+          Resource: "*"
+
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin
+  - serverless-python-requirements
+
+functions:
+
+  list_thoughts:
+    handler: src/thoughs.list_thoughts
+    events:
+      - http:
+          path: /list/thoughts
+          method: GET
+          private: false
+          cors: true
+
+  get_thought:
+    handler: src/thoughs.get_thought
+    events:
+      - http:
+          path: /get/thought/{thought_id}
+          method: GET
+          private: true
+          cors: true
+
+  post_thought:
+    handler: src/thoughs.create_thought
+    events:
+      - http:
+          path: /create/thought
+          method: POST
+          private: true
+          cors: true
+
+  edit_thought:
+    handler: src/thoughs.edit_thought
+    events:
+      - http:
+          path: /edit/thought/{thought_id}
+          method: PUT
+          private: true
+          cors: true
+
+  flag_thought:
+    handler: src/thoughs.flag_thought
+    events:
+      - http:
+          path: /flag/thought/{thought_id}
+          method: POST
+          private: true
+          cors: true

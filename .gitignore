@@ -1,0 +1,7 @@
+node_modules/
+.serverless/
+__pycache__/
+*.pyc
+env/
+.venv/
+config/local.yml

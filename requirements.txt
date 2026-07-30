@@ -1,0 +1,4 @@
+pymongo>=4.7,<5.0
+# Required for mongodb+srv:// connection strings. Listed explicitly because
+# pymongo dropped the [srv] extra in 4.17.
+dnspython>=2.6

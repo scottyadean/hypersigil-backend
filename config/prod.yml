@@ -1,0 +1,15 @@
+# prod config
+env: prod
+region: us-west-2
+deploy_bucket: sls-us-west-2-artifacts-dev
+
+# App Environment Variables
+env_vars:
+  # Base Vars
+  ENV: ${self:custom.args.env}
+  REGION: ${self:custom.args.region}
+  DB_NAME: hypersigil
+  # Lock this down to the s3 site origin once the bucket url is known.
+  ALLOWED_ORIGIN: "*"
+  # Stored as a SecureString in SSM, resolved at deploy time.
+  DB_URL: "${ssm:/hypersigil/prod/db_url}"

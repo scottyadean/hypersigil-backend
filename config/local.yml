@@ -1,0 +1,15 @@
+# base config
+env: local
+region: us-west-2
+deploy_bucket: sls-us-west-2-artifacts-dev-not-used
+
+# App Environment Variables
+env_vars:
+  # Base Vars
+  ENV: ${self:custom.args.env}
+  REGION: ${self:custom.args.region}
+  DB_NAME: hypersigil
+  ALLOWED_ORIGIN: "*"
+  # This file is gitignored - it holds the real local connection string.
+  # An exported DB_URL takes precedence when one is set.
+  DB_URL: mongodb+srv://hypersigil_user:1__OtterFoxWolf__007@cluster0.t0mx72r.mongodb.net/hypersigil?appName=Cluster0
