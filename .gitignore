@@ -3,5 +3,6 @@ node_modules/
 __pycache__/
 *.pyc
 env/
+.env
 .venv/
 config/local.yml

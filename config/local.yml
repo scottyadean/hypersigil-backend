@@ -12,4 +12,4 @@ env_vars:
   ALLOWED_ORIGIN: "*"
   # This file is gitignored - it holds the real local connection string.
   # An exported DB_URL takes precedence when one is set.
-  DB_URL: 
+  #DB_URL: this comes from .env
