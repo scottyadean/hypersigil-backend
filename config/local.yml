@@ -12,4 +12,4 @@ env_vars:
   ALLOWED_ORIGIN: "*"
   # This file is gitignored - it holds the real local connection string.
   # An exported DB_URL takes precedence when one is set.
-  DB_URL: mongodb+srv://hypersigil_user:1__OtterFoxWolf__007@cluster0.t0mx72r.mongodb.net/hypersigil?appName=Cluster0
+  DB_URL: 
